@@ -138,7 +138,15 @@ graph TD
                 <div class="preview-section">
                     <h2>图表预览</h2>
                     <div id="mermaidPreviewContainer" aria-label="Mermaid图表预览区域">
-                        <p class="placeholder">Mermaid图表预览将在此显示</p>
+                        <div class="preview-controls">
+                            <button id="zoomInBtn" title="放大">🔍+</button>
+                            <button id="zoomOutBtn" title="缩小">🔍-</button>
+                            <button id="resetZoomBtn" title="重置缩放">↻</button>
+                            <button id="fullscreenBtn" title="全屏预览">⛶</button>
+                        </div>
+                        <div id="mermaidPreviewContent">
+                            <p class="placeholder">Mermaid图表预览将在此显示</p>
+                        </div>
                     </div>
                     <div class="export-options">
                         <label for="mermaidFormatSelect">导出格式:</label>

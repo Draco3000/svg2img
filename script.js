@@ -11,6 +11,10 @@ class SVGToJPGConverter {
         this.mermaidPreviewBtn = document.getElementById('mermaidPreviewBtn');
         this.mermaidExportBtn = document.getElementById('mermaidExportBtn');
         
+        // Zoom and fullscreen variables
+        this.currentZoom = 1;
+        this.isFullscreen = false;
+        
         this.initEventListeners();
         this.initMermaid();
         this.previewSVG(); // Preview the default SVG
@@ -36,6 +40,9 @@ class SVGToJPGConverter {
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
         });
+        
+        // 缩放和全屏控制
+        this.initZoomControls();
         
         // Auto-preview when user stops typing
         let svgTimeout, mermaidTimeout;
@@ -64,6 +71,135 @@ class SVGToJPGConverter {
         
         // 预览默认的Mermaid图表
         setTimeout(() => this.previewMermaid(), 500);
+    }
+    
+    initZoomControls() {
+        // 缩放和全屏按钮事件
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const resetZoomBtn = document.getElementById('resetZoomBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        
+        if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
+        if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        if (resetZoomBtn) resetZoomBtn.addEventListener('click', () => this.resetZoom());
+        if (fullscreenBtn) fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+        
+        // ESC键退出全屏
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isFullscreen) {
+                this.exitFullscreen();
+            }
+        });
+    }
+    
+    zoomIn() {
+        this.currentZoom = Math.min(this.currentZoom * 1.2, 5); // 最大5倍
+        this.applyZoom();
+    }
+    
+    zoomOut() {
+        this.currentZoom = Math.max(this.currentZoom / 1.2, 0.2); // 最小0.2倍
+        this.applyZoom();
+    }
+    
+    resetZoom() {
+        this.currentZoom = 1;
+        this.applyZoom();
+    }
+    
+    applyZoom() {
+        const previewContent = document.getElementById('mermaidPreviewContent');
+        if (previewContent) {
+            previewContent.style.transform = `scale(${this.currentZoom})`;
+        }
+        
+        // 如果在全屏模式，也应用到全屏预览
+        const fullscreenPreview = document.querySelector('.fullscreen-preview');
+        if (fullscreenPreview) {
+            fullscreenPreview.style.transform = `scale(${this.currentZoom})`;
+        }
+    }
+    
+    toggleFullscreen() {
+        if (this.isFullscreen) {
+            this.exitFullscreen();
+        } else {
+            this.enterFullscreen();
+        }
+    }
+    
+    enterFullscreen() {
+        const mermaidContent = this.mermaidPreviewContainer.querySelector('.mermaid');
+        if (!mermaidContent) {
+            this.showMermaidError('没有可全屏显示的图表');
+            return;
+        }
+        
+        // 创建全屏覆盖层
+        const overlay = document.createElement('div');
+        overlay.className = 'fullscreen-overlay';
+        overlay.id = 'fullscreenOverlay';
+        
+        // 创建全屏内容容器
+        const fullscreenContent = document.createElement('div');
+        fullscreenContent.className = 'fullscreen-content';
+        
+        // 创建全屏控制按钮
+        const controls = document.createElement('div');
+        controls.className = 'fullscreen-controls';
+        controls.innerHTML = `
+            <button id="fullscreenZoomIn" title="放大">🔍+</button>
+            <button id="fullscreenZoomOut" title="缩小">🔍-</button>
+            <button id="fullscreenResetZoom" title="重置缩放">↻</button>
+            <button id="exitFullscreen" title="退出全屏">✕</button>
+        `;
+        
+        // 创建预览区域
+        const previewArea = document.createElement('div');
+        previewArea.className = 'fullscreen-preview';
+        previewArea.style.transform = `scale(${this.currentZoom})`;
+        
+        // 克隆Mermaid内容
+        const clonedContent = mermaidContent.cloneNode(true);
+        previewArea.appendChild(clonedContent);
+        
+        // 组装全屏内容
+        fullscreenContent.appendChild(controls);
+        fullscreenContent.appendChild(previewArea);
+        overlay.appendChild(fullscreenContent);
+        
+        // 添加到页面
+        document.body.appendChild(overlay);
+        
+        // 绑定全屏控制事件
+        document.getElementById('fullscreenZoomIn').addEventListener('click', () => this.zoomIn());
+        document.getElementById('fullscreenZoomOut').addEventListener('click', () => this.zoomOut());
+        document.getElementById('fullscreenResetZoom').addEventListener('click', () => this.resetZoom());
+        document.getElementById('exitFullscreen').addEventListener('click', () => this.exitFullscreen());
+        
+        // 点击覆盖层退出全屏
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                this.exitFullscreen();
+            }
+        });
+        
+        this.isFullscreen = true;
+        document.body.style.overflow = 'hidden'; // 防止页面滚动
+    }
+    
+    exitFullscreen() {
+        const overlay = document.getElementById('fullscreenOverlay');
+        if (overlay) {
+            overlay.remove();
+        }
+        
+        this.isFullscreen = false;
+        document.body.style.overflow = ''; // 恢复页面滚动
+        
+        // 重置缩放到普通预览
+        this.applyZoom();
     }
     
     switchTab(tabName) {
@@ -233,19 +369,30 @@ class SVGToJPGConverter {
         }
         
         try {
-            // 清空预览容器
-            this.mermaidPreviewContainer.innerHTML = '';
+            // 重置缩放
+            this.currentZoom = 1;
+            
+            // 获取预览内容容器
+            const previewContent = document.getElementById('mermaidPreviewContent');
+            if (!previewContent) {
+                this.showMermaidError('预览容器未找到');
+                return;
+            }
+            
+            // 清空预览内容
+            previewContent.innerHTML = '';
             
             // 创建一个临时div来渲染Mermaid
             const tempDiv = document.createElement('div');
             tempDiv.className = 'mermaid';
             tempDiv.textContent = mermaidCode;
-            this.mermaidPreviewContainer.appendChild(tempDiv);
+            previewContent.appendChild(tempDiv);
             
             // 渲染Mermaid图表
             mermaid.init(undefined, tempDiv).then(() => {
                 this.mermaidPreviewContainer.classList.add('has-content');
                 this.mermaidExportBtn.disabled = false;
+                this.applyZoom(); // 应用当前缩放
                 this.showMermaidSuccess('Mermaid图表预览加载成功！');
             }).catch(error => {
                 this.showMermaidError(`Mermaid渲染失败: ${error.message}`);
@@ -352,8 +499,12 @@ class SVGToJPGConverter {
     }
     
     showMermaidPlaceholder() {
-        this.mermaidPreviewContainer.innerHTML = '<p class="placeholder">Mermaid图表预览将在此显示</p>';
+        const previewContent = document.getElementById('mermaidPreviewContent');
+        if (previewContent) {
+            previewContent.innerHTML = '<p class="placeholder">Mermaid图表预览将在此显示</p>';
+        }
         this.mermaidPreviewContainer.classList.remove('has-content');
+        this.currentZoom = 1;
     }
     
     showError(message) {
