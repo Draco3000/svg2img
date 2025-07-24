@@ -136,6 +136,21 @@ class SVGToJPGConverter {
             return;
         }
         
+        // 尝试使用浏览器原生全屏API
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().then(() => {
+                this.createFullscreenOverlay(mermaidContent);
+            }).catch(() => {
+                // 如果原生全屏失败，使用自定义全屏
+                this.createFullscreenOverlay(mermaidContent);
+            });
+        } else {
+            // 浏览器不支持原生全屏，使用自定义全屏
+            this.createFullscreenOverlay(mermaidContent);
+        }
+    }
+    
+    createFullscreenOverlay(mermaidContent) {
         // 创建全屏覆盖层
         const overlay = document.createElement('div');
         overlay.className = 'fullscreen-overlay';
@@ -152,16 +167,27 @@ class SVGToJPGConverter {
             <button id="fullscreenZoomIn" title="放大">🔍+</button>
             <button id="fullscreenZoomOut" title="缩小">🔍-</button>
             <button id="fullscreenResetZoom" title="重置缩放">↻</button>
+            <button id="fullscreenFit" title="适应屏幕">⛶</button>
             <button id="exitFullscreen" title="退出全屏">✕</button>
         `;
         
         // 创建预览区域
         const previewArea = document.createElement('div');
-        previewArea.className = 'fullscreen-preview';
-        previewArea.style.transform = `scale(${this.currentZoom})`;
+        previewArea.className = 'fullscreen-preview auto-scale';
+        previewArea.id = 'fullscreenPreviewArea';
         
-        // 克隆Mermaid内容
+        // 克隆Mermaid内容并优化显示
         const clonedContent = mermaidContent.cloneNode(true);
+        
+        // 移除原有的尺寸限制
+        const svgElement = clonedContent.querySelector('svg');
+        if (svgElement) {
+            svgElement.style.maxWidth = 'none';
+            svgElement.style.maxHeight = 'none';
+            svgElement.style.width = 'auto';
+            svgElement.style.height = 'auto';
+        }
+        
         previewArea.appendChild(clonedContent);
         
         // 组装全屏内容
@@ -172,10 +198,14 @@ class SVGToJPGConverter {
         // 添加到页面
         document.body.appendChild(overlay);
         
+        // 自动适应屏幕大小
+        setTimeout(() => this.fitToScreen(), 100);
+        
         // 绑定全屏控制事件
-        document.getElementById('fullscreenZoomIn').addEventListener('click', () => this.zoomIn());
-        document.getElementById('fullscreenZoomOut').addEventListener('click', () => this.zoomOut());
-        document.getElementById('fullscreenResetZoom').addEventListener('click', () => this.resetZoom());
+        document.getElementById('fullscreenZoomIn').addEventListener('click', () => this.fullscreenZoomIn());
+        document.getElementById('fullscreenZoomOut').addEventListener('click', () => this.fullscreenZoomOut());
+        document.getElementById('fullscreenResetZoom').addEventListener('click', () => this.fullscreenResetZoom());
+        document.getElementById('fullscreenFit').addEventListener('click', () => this.fitToScreen());
         document.getElementById('exitFullscreen').addEventListener('click', () => this.exitFullscreen());
         
         // 点击覆盖层退出全屏
@@ -185,20 +215,88 @@ class SVGToJPGConverter {
             }
         });
         
+        // 监听窗口大小变化，自动重新适应
+        this.resizeHandler = () => this.fitToScreen();
+        window.addEventListener('resize', this.resizeHandler);
+        
         this.isFullscreen = true;
-        document.body.style.overflow = 'hidden'; // 防止页面滚动
+        document.body.style.overflow = 'hidden';
+    }
+    
+    fitToScreen() {
+        const previewArea = document.getElementById('fullscreenPreviewArea');
+        const svgElement = previewArea?.querySelector('svg');
+        
+        if (!previewArea || !svgElement) return;
+        
+        // 获取屏幕可用空间（减去控制按钮和边距）
+        const availableWidth = window.innerWidth - 80; // 左右边距
+        const availableHeight = window.innerHeight - 120; // 上下边距和控制按钮
+        
+        // 获取SVG原始尺寸
+        const svgRect = svgElement.getBoundingClientRect();
+        const svgWidth = svgRect.width;
+        const svgHeight = svgRect.height;
+        
+        if (svgWidth === 0 || svgHeight === 0) return;
+        
+        // 计算缩放比例以适应屏幕
+        const scaleX = availableWidth / svgWidth;
+        const scaleY = availableHeight / svgHeight;
+        const optimalScale = Math.min(scaleX, scaleY, 3); // 最大3倍缩放
+        
+        // 应用缩放
+        this.fullscreenZoom = optimalScale;
+        previewArea.style.transform = `scale(${optimalScale})`;
+    }
+    
+    fullscreenZoomIn() {
+        this.fullscreenZoom = Math.min((this.fullscreenZoom || 1) * 1.2, 5);
+        this.applyFullscreenZoom();
+    }
+    
+    fullscreenZoomOut() {
+        this.fullscreenZoom = Math.max((this.fullscreenZoom || 1) / 1.2, 0.1);
+        this.applyFullscreenZoom();
+    }
+    
+    fullscreenResetZoom() {
+        this.fullscreenZoom = 1;
+        this.applyFullscreenZoom();
+    }
+    
+    applyFullscreenZoom() {
+        const previewArea = document.getElementById('fullscreenPreviewArea');
+        if (previewArea) {
+            previewArea.style.transform = `scale(${this.fullscreenZoom || 1})`;
+        }
     }
     
     exitFullscreen() {
+        // 移除窗口大小变化监听器
+        if (this.resizeHandler) {
+            window.removeEventListener('resize', this.resizeHandler);
+            this.resizeHandler = null;
+        }
+        
+        // 退出浏览器原生全屏
+        if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {
+                // 忽略退出全屏失败的错误
+            });
+        }
+        
+        // 移除自定义全屏覆盖层
         const overlay = document.getElementById('fullscreenOverlay');
         if (overlay) {
             overlay.remove();
         }
         
         this.isFullscreen = false;
-        document.body.style.overflow = ''; // 恢复页面滚动
+        this.fullscreenZoom = 1;
+        document.body.style.overflow = '';
         
-        // 重置缩放到普通预览
+        // 重置普通预览的缩放
         this.applyZoom();
     }
     
