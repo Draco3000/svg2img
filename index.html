@@ -3,250 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO基础标签 -->
-    <title>SVG转图片工具 - 免费在线SVG转PNG/JPG转换器 | SVG to IMG Converter</title>
-    <meta name="description" content="免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式。无需下载软件，浏览器直接使用，支持透明背景和自定义尺寸。">
-    <meta name="keywords" content="SVG转PNG,SVG转JPG,SVG转图片,矢量图转换,在线转换工具,免费图片转换,SVG converter">
-    <meta name="author" content="SVG转换工具">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="zh-CN">
-    
-    <!-- Open Graph标签 (社交媒体分享) -->
-    <meta property="og:title" content="SVG转图片工具 - 免费在线SVG转PNG/JPG转换器">
-    <meta property="og:description" content="免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式。无需下载软件，浏览器直接使用。">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://svg2img.aigc24.com">
-    <meta property="og:site_name" content="SVG转图片工具">
-    <meta property="og:locale" content="zh_CN">
-    
-    <!-- Twitter Card标签 -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="SVG转图片工具 - 免费在线SVG转PNG/JPG转换器">
-    <meta name="twitter:description" content="免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式。">
-    
-    <!-- 技术标签 -->
-    <meta name="theme-color" content="#6366f1">
-    <meta name="msapplication-TileColor" content="#6366f1">
-    
-    <!-- 规范链接 -->
-    <link rel="canonical" href="https://svg2img.aigc24.com">
-    
-    <!-- 预连接优化 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    
-    <!-- 样式表 -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Mermaid库 -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    
-    <!-- 结构化数据 (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "SVG转图片工具",
-        "alternateName": "SVG to IMG Converter",
-        "description": "免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式",
-        "url": "https://svg2img.aigc24.com",
-        "applicationCategory": "DesignApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "CNY"
-        },
-        "featureList": [
-            "SVG转PNG转换",
-            "SVG转JPG转换",
-            "高质量图片输出",
-            "透明背景支持",
-            "实时预览功能",
-            "无需注册使用"
-        ],
-        "creator": {
-            "@type": "Organization",
-            "name": "SVG转换工具"
+    <title>图表转图片工具 - 免费在线转换器</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #64748b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --radius: 8px;
         }
-    }
-    </script>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background-color: #f1f5f9;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: #e2e8f0;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-section, .preview-section {
+            background-color: var(--bg-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-family: monospace;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:disabled {
+            background-color: var(--secondary-color);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        #previewContainer, #mermaidPreviewContainer {
+            width: 100%;
+            height: 300px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            background-color: white;
+        }
+
+        #previewContainer svg, #mermaidPreviewContent svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .placeholder {
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: white;
+        }
+
+        .zoom-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .zoom-controls button {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+
+        /* 全屏样式 */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fullscreen-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .fullscreen-controls button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .fullscreen-controls button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .exit-btn {
+            background-color: rgba(239, 68, 68, 0.7) !important;
+        }
+
+        .exit-btn:hover {
+            background-color: rgba(239, 68, 68, 0.9) !important;
+        }
+
+        .fullscreen-preview-area {
+            flex: 1;
+            overflow: auto;
+            cursor: grab;
+            padding: 20px;
+        }
+
+        .fullscreen-content-container {
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center center;
+        }
+
+        .fullscreen-content-container svg {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .tab-content.active {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>图表转图片工具 - 免费在线转换器</h1>
-            <p class="subtitle">支持SVG代码和Mermaid图表转换为高质量PNG和JPG格式图片</p>
-        </div>
+        <h1>图表转图片工具 - 免费在线转换器</h1>
+        <p class="subtitle">支持SVG代码和Mermaid图表转换为高质量PNG和JPG格式图片</p>
     </header>
 
-    <main class="container">
-        <!-- 标签页导航 -->
-        <nav class="tab-nav">
+    <div class="container">
+        <div class="tabs">
             <button class="tab-btn active" data-tab="svg">SVG转换</button>
             <button class="tab-btn" data-tab="mermaid">Mermaid图表</button>
-        </nav>
+        </div>
 
-        <!-- SVG转换工具 -->
-        <section class="tool-section tab-content active" id="svg-tab">
-            <div class="main-content">
-                <div class="input-section">
-                    <h2>SVG代码输入</h2>
-                    <textarea id="svgInput" placeholder="在此输入您的SVG代码 (例如: <svg>...</svg>)" aria-label="SVG代码输入框">
+        <div id="svg-tab" class="tab-content active">
+            <div class="input-section">
+                <h2>SVG代码输入</h2>
+                <textarea id="svgInput" placeholder="在此粘贴您的SVG代码...">
 <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="100" cy="100" r="80" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
-  <text x="100" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="20">Hello</text>
-</svg>
-                    </textarea>
-                    <button id="previewBtn" aria-label="预览SVG图像">预览SVG</button>
+  <circle cx="100" cy="100" r="80" fill="#6366f1" />
+  <circle cx="100" cy="100" r="60" fill="#8b5cf6" />
+  <circle cx="100" cy="100" r="40" fill="#d946ef" />
+</svg></textarea>
+                <button id="previewBtn">预览SVG</button>
+            </div>
+            <div class="preview-section">
+                <h2>实时预览</h2>
+                <div id="previewContainer">
+                    <p class="placeholder">SVG预览将在此显示</p>
                 </div>
-                
-                <div class="preview-section">
-                    <h2>实时预览</h2>
-                    <div id="previewContainer" aria-label="SVG预览区域">
-                        <p class="placeholder">SVG预览将在此显示</p>
+                <div class="controls">
+                    <div class="zoom-controls">
+                        <button id="svgZoomInBtn" title="放大">🔍+</button>
+                        <button id="svgZoomOutBtn" title="缩小">🔍-</button>
+                        <button id="svgResetZoomBtn" title="重置缩放">↻</button>
+                        <button id="svgFullscreenBtn" title="全屏预览">⛶</button>
                     </div>
-                    <div class="export-options">
-                        <label for="formatSelect">导出格式:</label>
-                        <select id="formatSelect" aria-label="选择导出格式">
-                            <option value="png">PNG (无损压缩，支持透明)</option>
-                            <option value="jpg">JPG (文件更小)</option>
-                        </select>
-                        <button id="exportBtn" disabled aria-label="导出图片">导出图片</button>
-                    </div>
+                    <select id="formatSelect">
+                        <option value="png">PNG (无损, 支持透明)</option>
+                        <option value="jpg">JPG (有损, 不支持透明)</option>
+                    </select>
+                    <button id="exportBtn" disabled>导出图片</button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Mermaid图表转换工具 -->
-        <section class="tool-section tab-content" id="mermaid-tab">
-            <div class="main-content">
-                <div class="input-section">
-                    <h2>Mermaid代码输入</h2>
-                    <textarea id="mermaidInput" placeholder="在此输入您的Mermaid代码" aria-label="Mermaid代码输入框">
-graph TD
+        <div id="mermaid-tab" class="tab-content">
+            <div class="input-section">
+                <h2>Mermaid代码输入</h2>
+                <textarea id="mermaidInput" placeholder="在此粘贴您的Mermaid代码...">flowchart TD
     A[开始] --> B{判断条件}
     B -->|是| C[执行操作A]
     B -->|否| D[执行操作B]
     C --> E[结束]
-    D --> E
-                    </textarea>
-                    <button id="mermaidPreviewBtn" aria-label="预览Mermaid图表">预览图表</button>
-                </div>
-                
-                <div class="preview-section">
-                    <h2>图表预览</h2>
-                    <div id="mermaidPreviewContainer" aria-label="Mermaid图表预览区域">
-                        <div class="preview-controls">
-                            <button id="zoomInBtn" title="放大">🔍+</button>
-                            <button id="zoomOutBtn" title="缩小">🔍-</button>
-                            <button id="resetZoomBtn" title="重置缩放">↻</button>
-                            <button id="fullscreenBtn" title="全屏预览">⛶</button>
-                        </div>
-                        <div id="mermaidPreviewContent">
-                            <p class="placeholder">Mermaid图表预览将在此显示</p>
-                        </div>
-                    </div>
-                    <div class="export-options">
-                        <label for="mermaidFormatSelect">导出格式:</label>
-                        <select id="mermaidFormatSelect" aria-label="选择导出格式">
-                            <option value="png">PNG (无损压缩，支持透明)</option>
-                            <option value="jpg">JPG (文件更小)</option>
-                        </select>
-                        <button id="mermaidExportBtn" disabled aria-label="导出图片">导出图片</button>
+    D --> E</textarea>
+                <button id="mermaidPreviewBtn">预览图表</button>
+            </div>
+            <div class="preview-section">
+                <h2>图表预览</h2>
+                <div id="mermaidPreviewContainer">
+                    <div id="mermaidPreviewContent">
+                        <p class="placeholder">Mermaid图表预览将在此显示</p>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <section class="instructions-section">
-            <h2>使用说明</h2>
-            
-            <div class="instruction-tabs">
-                <div class="instruction-item">
-                    <h3>📊 SVG转换功能</h3>
-                    <ol>
-                        <li>在文本框中输入您的SVG代码（必须以 &lt;svg&gt; 开始，以 &lt;/svg&gt; 结束）</li>
-                        <li>点击"预览SVG"按钮查看渲染效果</li>
-                        <li>选择导出格式（PNG或JPG）</li>
-                        <li>点击"导出图片"下载转换后的图片文件</li>
-                    </ol>
-                </div>
-                
-                <div class="instruction-item">
-                    <h3>🎯 Mermaid图表功能</h3>
-                    <ol>
-                        <li>在文本框中输入您的Mermaid代码（支持流程图、时序图、甘特图等）</li>
-                        <li>点击"预览图表"按钮查看图表渲染效果</li>
-                        <li>选择导出格式（PNG或JPG）</li>
-                        <li>点击"导出图片"下载转换后的图表文件</li>
-                    </ol>
+                <div class="controls">
+                    <div class="zoom-controls">
+                        <button id="zoomInBtn" title="放大">🔍+</button>
+                        <button id="zoomOutBtn" title="缩小">🔍-</button>
+                        <button id="resetZoomBtn" title="重置缩放">↻</button>
+                        <button id="fullscreenBtn" title="全屏预览">⛶</button>
+                    </div>
+                    <select id="mermaidFormatSelect">
+                        <option value="png">PNG (无损, 支持透明)</option>
+                        <option value="jpg">JPG (有损, 不支持透明)</option>
+                    </select>
+                    <button id="mermaidExportBtn" disabled>导出图片</button>
                 </div>
             </div>
-        </section>
-
-        <section class="features-section">
-            <h2>功能特点</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <h3>🚀 双重转换</h3>
-                    <p>支持SVG代码和Mermaid图表两种格式，满足不同需求</p>
-                </div>
-                <div class="feature-item">
-                    <h3>🎨 高质量输出</h3>
-                    <p>支持高分辨率输出，保证图片质量清晰锐利</p>
-                </div>
-                <div class="feature-item">
-                    <h3>📊 丰富图表</h3>
-                    <p>Mermaid支持流程图、时序图、甘特图、类图等多种图表类型</p>
-                </div>
-                <div class="feature-item">
-                    <h3>🔒 隐私安全</h3>
-                    <p>所有处理都在本地完成，不会上传您的代码到服务器</p>
-                </div>
-                <div class="feature-item">
-                    <h3>📱 跨平台支持</h3>
-                    <p>支持所有现代浏览器，在电脑、平板、手机上都能使用</p>
-                </div>
-                <div class="feature-item">
-                    <h3>⚡ 实时预览</h3>
-                    <p>输入代码后即时预览效果，所见即所得</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="faq-section">
-            <h2>常见问题</h2>
-            <div class="faq-item">
-                <h3>什么是SVG格式？</h3>
-                <p>SVG（可缩放矢量图形）是一种基于XML的矢量图像格式，可以无损缩放到任意大小。</p>
-            </div>
-            <div class="faq-item">
-                <h3>什么是Mermaid？</h3>
-                <p>Mermaid是一种基于文本的图表生成工具，可以用简单的代码创建流程图、时序图、甘特图等多种图表。</p>
-            </div>
-            <div class="faq-item">
-                <h3>PNG和JPG格式有什么区别？</h3>
-                <p>PNG支持透明背景，适合需要透明效果的图片；JPG文件更小，适合不需要透明背景的场景。</p>
-            </div>
-            <div class="faq-item">
-                <h3>Mermaid支持哪些图表类型？</h3>
-                <p>支持流程图(graph)、时序图(sequenceDiagram)、甘特图(gantt)、类图(classDiagram)、状态图(stateDiagram)等多种类型。</p>
-            </div>
-            <div class="faq-item">
-                <h3>转换后的图片质量如何？</h3>
-                <p>我们使用高质量的渲染算法，确保转换后的图片保持原有的清晰度和细节。</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 SVG转图片工具. 免费在线使用，无需注册.</p>
         </div>
-    </footer>
-    
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
