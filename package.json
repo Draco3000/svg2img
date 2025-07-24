@@ -1,0 +1,21 @@
+{
+  "name": "svg-to-image-converter",
+  "version": "1.0.0",
+  "description": "A web application to convert SVG code to high-quality PNG/JPG images",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site deployed'"
+  },
+  "keywords": [
+    "svg",
+    "png",
+    "jpg",
+    "converter",
+    "image",
+    "export"
+  ],
+  "author": "CodeBuddy",
+  "license": "MIT"
+}

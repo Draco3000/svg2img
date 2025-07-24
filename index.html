@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to JPG Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SVG to JPG Converter</h1>
+        
+        <div class="main-content">
+            <div class="input-section">
+                <h2>SVG Code Input</h2>
+                <textarea id="svgInput" placeholder="Enter your SVG code here (e.g., <svg>...</svg>)">
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="80" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
+  <text x="100" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="20">Hello</text>
+</svg>
+                </textarea>
+                <button id="previewBtn">Preview SVG</button>
+            </div>
+            
+            <div class="preview-section">
+                <h2>Preview</h2>
+                <div id="previewContainer">
+                    <p class="placeholder">SVG preview will appear here</p>
+                </div>
+                <div class="export-options">
+                    <label for="formatSelect">Export Format:</label>
+                    <select id="formatSelect">
+                        <option value="png">PNG (Lossless, Transparent)</option>
+                        <option value="jpg">JPG (Smaller file size)</option>
+                    </select>
+                    <button id="exportBtn" disabled>Export Image</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Enter your SVG code in the text area (must start with &lt;svg&gt; and end with &lt;/svg&gt;)</li>
+                <li>Click "Preview SVG" to see your SVG rendered</li>
+                <li>Click "Export as JPG" to download the image as a JPG file</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
