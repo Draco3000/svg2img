@@ -39,6 +39,9 @@
     <!-- 样式表 -->
     <link rel="stylesheet" href="style.css">
     
+    <!-- Mermaid库 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
     <!-- 结构化数据 (JSON-LD) -->
     <script type="application/ld+json">
     {
@@ -73,13 +76,20 @@
 <body>
     <header>
         <div class="container">
-            <h1>SVG转图片工具 - 免费在线转换器</h1>
-            <p class="subtitle">将SVG矢量图快速转换为高质量PNG和JPG格式图片</p>
+            <h1>图表转图片工具 - 免费在线转换器</h1>
+            <p class="subtitle">支持SVG代码和Mermaid图表转换为高质量PNG和JPG格式图片</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="tool-section">
+        <!-- 标签页导航 -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="svg">SVG转换</button>
+            <button class="tab-btn" data-tab="mermaid">Mermaid图表</button>
+        </nav>
+
+        <!-- SVG转换工具 -->
+        <section class="tool-section tab-content active" id="svg-tab">
             <div class="main-content">
                 <div class="input-section">
                     <h2>SVG代码输入</h2>
@@ -108,35 +118,92 @@
                 </div>
             </div>
         </section>
+
+        <!-- Mermaid图表转换工具 -->
+        <section class="tool-section tab-content" id="mermaid-tab">
+            <div class="main-content">
+                <div class="input-section">
+                    <h2>Mermaid代码输入</h2>
+                    <textarea id="mermaidInput" placeholder="在此输入您的Mermaid代码" aria-label="Mermaid代码输入框">
+graph TD
+    A[开始] --> B{判断条件}
+    B -->|是| C[执行操作A]
+    B -->|否| D[执行操作B]
+    C --> E[结束]
+    D --> E
+                    </textarea>
+                    <button id="mermaidPreviewBtn" aria-label="预览Mermaid图表">预览图表</button>
+                </div>
+                
+                <div class="preview-section">
+                    <h2>图表预览</h2>
+                    <div id="mermaidPreviewContainer" aria-label="Mermaid图表预览区域">
+                        <p class="placeholder">Mermaid图表预览将在此显示</p>
+                    </div>
+                    <div class="export-options">
+                        <label for="mermaidFormatSelect">导出格式:</label>
+                        <select id="mermaidFormatSelect" aria-label="选择导出格式">
+                            <option value="png">PNG (无损压缩，支持透明)</option>
+                            <option value="jpg">JPG (文件更小)</option>
+                        </select>
+                        <button id="mermaidExportBtn" disabled aria-label="导出图片">导出图片</button>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <section class="instructions-section">
             <h2>使用说明</h2>
-            <ol>
-                <li>在文本框中输入您的SVG代码（必须以 &lt;svg&gt; 开始，以 &lt;/svg&gt; 结束）</li>
-                <li>点击"预览SVG"按钮查看渲染效果</li>
-                <li>选择导出格式（PNG或JPG）</li>
-                <li>点击"导出图片"下载转换后的图片文件</li>
-            </ol>
+            
+            <div class="instruction-tabs">
+                <div class="instruction-item">
+                    <h3>📊 SVG转换功能</h3>
+                    <ol>
+                        <li>在文本框中输入您的SVG代码（必须以 &lt;svg&gt; 开始，以 &lt;/svg&gt; 结束）</li>
+                        <li>点击"预览SVG"按钮查看渲染效果</li>
+                        <li>选择导出格式（PNG或JPG）</li>
+                        <li>点击"导出图片"下载转换后的图片文件</li>
+                    </ol>
+                </div>
+                
+                <div class="instruction-item">
+                    <h3>🎯 Mermaid图表功能</h3>
+                    <ol>
+                        <li>在文本框中输入您的Mermaid代码（支持流程图、时序图、甘特图等）</li>
+                        <li>点击"预览图表"按钮查看图表渲染效果</li>
+                        <li>选择导出格式（PNG或JPG）</li>
+                        <li>点击"导出图片"下载转换后的图表文件</li>
+                    </ol>
+                </div>
+            </div>
         </section>
 
         <section class="features-section">
             <h2>功能特点</h2>
             <div class="features-grid">
                 <div class="feature-item">
-                    <h3>🚀 快速转换</h3>
-                    <p>无需上传文件，直接在浏览器中完成SVG到图片的转换</p>
+                    <h3>🚀 双重转换</h3>
+                    <p>支持SVG代码和Mermaid图表两种格式，满足不同需求</p>
                 </div>
                 <div class="feature-item">
                     <h3>🎨 高质量输出</h3>
                     <p>支持高分辨率输出，保证图片质量清晰锐利</p>
                 </div>
                 <div class="feature-item">
+                    <h3>📊 丰富图表</h3>
+                    <p>Mermaid支持流程图、时序图、甘特图、类图等多种图表类型</p>
+                </div>
+                <div class="feature-item">
                     <h3>🔒 隐私安全</h3>
-                    <p>所有处理都在本地完成，不会上传您的SVG代码到服务器</p>
+                    <p>所有处理都在本地完成，不会上传您的代码到服务器</p>
                 </div>
                 <div class="feature-item">
                     <h3>📱 跨平台支持</h3>
                     <p>支持所有现代浏览器，在电脑、平板、手机上都能使用</p>
+                </div>
+                <div class="feature-item">
+                    <h3>⚡ 实时预览</h3>
+                    <p>输入代码后即时预览效果，所见即所得</p>
                 </div>
             </div>
         </section>
@@ -148,8 +215,16 @@
                 <p>SVG（可缩放矢量图形）是一种基于XML的矢量图像格式，可以无损缩放到任意大小。</p>
             </div>
             <div class="faq-item">
+                <h3>什么是Mermaid？</h3>
+                <p>Mermaid是一种基于文本的图表生成工具，可以用简单的代码创建流程图、时序图、甘特图等多种图表。</p>
+            </div>
+            <div class="faq-item">
                 <h3>PNG和JPG格式有什么区别？</h3>
                 <p>PNG支持透明背景，适合需要透明效果的图片；JPG文件更小，适合不需要透明背景的场景。</p>
+            </div>
+            <div class="faq-item">
+                <h3>Mermaid支持哪些图表类型？</h3>
+                <p>支持流程图(graph)、时序图(sequenceDiagram)、甘特图(gantt)、类图(classDiagram)、状态图(stateDiagram)等多种类型。</p>
             </div>
             <div class="faq-item">
                 <h3>转换后的图片质量如何？</h3>

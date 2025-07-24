@@ -32,6 +32,49 @@ header h1 {
     font-weight: 300;
 }
 
+/* 标签页导航 */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
+    margin-bottom: 0;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 12px 30px;
+    margin: 0 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* 标签页内容 */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 /* 主容器 */
 .container {
     max-width: 1200px;
@@ -74,7 +117,7 @@ h2 {
     font-weight: 500;
 }
 
-#svgInput {
+#svgInput, #mermaidInput {
     width: 100%;
     height: 300px;
     padding: 15px;
@@ -86,13 +129,13 @@ h2 {
     transition: border-color 0.3s ease;
 }
 
-#svgInput:focus {
+#svgInput:focus, #mermaidInput:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-#previewContainer {
+#previewContainer, #mermaidPreviewContainer {
     min-height: 300px;
     border: 2px dashed #dee2e6;
     border-radius: 8px;
@@ -102,11 +145,23 @@ h2 {
     background: white;
     padding: 20px;
     margin-bottom: 20px;
+    overflow: auto;
 }
 
-#previewContainer.has-content {
+#previewContainer.has-content, #mermaidPreviewContainer.has-content {
     border-style: solid;
     border-color: #28a745;
+}
+
+/* Mermaid图表样式 */
+#mermaidPreviewContainer .mermaid {
+    max-width: 100%;
+    height: auto;
+}
+
+#mermaidPreviewContainer svg {
+    max-width: 100%;
+    height: auto;
 }
 
 .placeholder {
@@ -177,14 +232,35 @@ button:disabled {
     color: #495057;
     margin-bottom: 20px;
     font-size: 1.5em;
+    text-align: center;
 }
 
-.instructions-section ol {
+.instruction-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.instruction-item {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.instruction-item h3 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.instruction-item ol {
     color: #6c757d;
     padding-left: 20px;
 }
 
-.instructions-section li {
+.instruction-item li {
     margin-bottom: 10px;
     line-height: 1.6;
 }
@@ -312,7 +388,22 @@ footer p {
         font-size: 1rem;
     }
     
+    .tab-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .tab-btn {
+        width: 100%;
+        margin: 0;
+    }
+    
     .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .instruction-tabs {
         grid-template-columns: 1fr;
         gap: 20px;
     }
@@ -334,11 +425,11 @@ footer p {
         padding: 20px;
     }
     
-    #svgInput {
+    #svgInput, #mermaidInput {
         height: 250px;
     }
     
-    #previewContainer {
+    #previewContainer, #mermaidPreviewContainer {
         min-height: 250px;
     }
     
