@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://svg2img.aigc24.com/sitemap.xml
+
+# 优化爬虫抓取
+Crawl-delay: 1

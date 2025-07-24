@@ -8,33 +8,56 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    padding: 20px;
+    line-height: 1.6;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-h1 {
+/* Header样式 */
+header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-align: center;
-    padding: 30px;
-    margin: 0;
-    font-size: 2.5em;
+    padding: 40px 20px;
+}
+
+header h1 {
+    font-size: 2.5rem;
     font-weight: 300;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* 主容器 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+main.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    margin-top: -20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 工具区域 */
+.tool-section {
+    padding: 40px 30px;
 }
 
 .main-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-    padding: 30px;
+    margin-bottom: 40px;
 }
 
 .input-section, .preview-section {
@@ -143,53 +166,122 @@ button:disabled {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.instructions {
-    background: #e9ecef;
-    padding: 25px 30px;
-    border-top: 1px solid #dee2e6;
+/* 说明区域 */
+.instructions-section {
+    background: #f8f9fa;
+    padding: 30px;
+    border-top: 1px solid #e9ecef;
 }
 
-.instructions h3 {
+.instructions-section h2 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.instructions-section ol {
+    color: #6c757d;
+    padding-left: 20px;
+}
+
+.instructions-section li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* 功能特点区域 */
+.features-section {
+    padding: 40px 30px;
+    background: #fff;
+}
+
+.features-section h2 {
+    text-align: center;
+    color: #495057;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.feature-item {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item h3 {
     color: #495057;
     margin-bottom: 15px;
     font-size: 1.3em;
 }
 
-.instructions ol {
+.feature-item p {
     color: #6c757d;
-    padding-left: 20px;
+    line-height: 1.6;
 }
 
-.instructions li {
-    margin-bottom: 8px;
-    line-height: 1.5;
+/* FAQ区域 */
+.faq-section {
+    padding: 40px 30px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
 }
 
-@media (max-width: 768px) {
-    .main-content {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 20px;
-    }
-    
-    h1 {
-        font-size: 2em;
-        padding: 20px;
-    }
-    
-    .input-section, .preview-section {
-        padding: 20px;
-    }
-    
-    #svgInput {
-        height: 250px;
-    }
-    
-    #previewContainer {
-        min-height: 250px;
-    }
+.faq-section h2 {
+    text-align: center;
+    color: #495057;
+    margin-bottom: 30px;
+    font-size: 2rem;
 }
 
+.faq-item {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.faq-item h3 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.faq-item p {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    background: #495057;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* 消息样式 */
 .error-message {
     color: #dc3545;
     background: #f8d7da;
@@ -208,4 +300,72 @@ button:disabled {
     border-radius: 5px;
     margin-top: 10px;
     font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .tool-section {
+        padding: 20px;
+    }
+    
+    .features-section, .faq-section {
+        padding: 30px 20px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .input-section, .preview-section {
+        padding: 20px;
+    }
+    
+    #svgInput {
+        height: 250px;
+    }
+    
+    #previewContainer {
+        min-height: 250px;
+    }
+    
+    .features-section h2, .faq-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 30px 15px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .tool-section {
+        padding: 15px;
+    }
+    
+    .features-section, .faq-section, .instructions-section {
+        padding: 20px 15px;
+    }
 }

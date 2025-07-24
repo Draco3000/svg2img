@@ -1,52 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG to IMG Converter</title>
+    
+    <!-- SEO基础标签 -->
+    <title>SVG转图片工具 - 免费在线SVG转PNG/JPG转换器 | SVG to IMG Converter</title>
+    <meta name="description" content="免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式。无需下载软件，浏览器直接使用，支持透明背景和自定义尺寸。">
+    <meta name="keywords" content="SVG转PNG,SVG转JPG,SVG转图片,矢量图转换,在线转换工具,免费图片转换,SVG converter">
+    <meta name="author" content="SVG转换工具">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="zh-CN">
+    
+    <!-- Open Graph标签 (社交媒体分享) -->
+    <meta property="og:title" content="SVG转图片工具 - 免费在线SVG转PNG/JPG转换器">
+    <meta property="og:description" content="免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式。无需下载软件，浏览器直接使用。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://svg2img.aigc24.com">
+    <meta property="og:site_name" content="SVG转图片工具">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card标签 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SVG转图片工具 - 免费在线SVG转PNG/JPG转换器">
+    <meta name="twitter:description" content="免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式。">
+    
+    <!-- 技术标签 -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="msapplication-TileColor" content="#6366f1">
+    
+    <!-- 规范链接 -->
+    <link rel="canonical" href="https://svg2img.aigc24.com">
+    
+    <!-- 预连接优化 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- 样式表 -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- 结构化数据 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "SVG转图片工具",
+        "alternateName": "SVG to IMG Converter",
+        "description": "免费在线SVG转图片工具，支持将SVG矢量图转换为高质量PNG和JPG格式",
+        "url": "https://svg2img.aigc24.com",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "featureList": [
+            "SVG转PNG转换",
+            "SVG转JPG转换",
+            "高质量图片输出",
+            "透明背景支持",
+            "实时预览功能",
+            "无需注册使用"
+        ],
+        "creator": {
+            "@type": "Organization",
+            "name": "SVG转换工具"
+        }
+    }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>SVG to IMG Converter</h1>
-        
-        <div class="main-content">
-            <div class="input-section">
-                <h2>SVG Code Input</h2>
-                <textarea id="svgInput" placeholder="Enter your SVG code here (e.g., <svg>...</svg>)">
+    <header>
+        <div class="container">
+            <h1>SVG转图片工具 - 免费在线转换器</h1>
+            <p class="subtitle">将SVG矢量图快速转换为高质量PNG和JPG格式图片</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-section">
+            <div class="main-content">
+                <div class="input-section">
+                    <h2>SVG代码输入</h2>
+                    <textarea id="svgInput" placeholder="在此输入您的SVG代码 (例如: <svg>...</svg>)" aria-label="SVG代码输入框">
 <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
   <circle cx="100" cy="100" r="80" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
   <text x="100" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="20">Hello</text>
 </svg>
-                </textarea>
-                <button id="previewBtn">Preview SVG</button>
-            </div>
-            
-            <div class="preview-section">
-                <h2>Preview</h2>
-                <div id="previewContainer">
-                    <p class="placeholder">SVG preview will appear here</p>
+                    </textarea>
+                    <button id="previewBtn" aria-label="预览SVG图像">预览SVG</button>
                 </div>
-                <div class="export-options">
-                    <label for="formatSelect">Export Format:</label>
-                    <select id="formatSelect">
-                        <option value="png">PNG (Lossless, Transparent)</option>
-                        <option value="jpg">JPG (Smaller file size)</option>
-                    </select>
-                    <button id="exportBtn" disabled>Export Image</button>
+                
+                <div class="preview-section">
+                    <h2>实时预览</h2>
+                    <div id="previewContainer" aria-label="SVG预览区域">
+                        <p class="placeholder">SVG预览将在此显示</p>
+                    </div>
+                    <div class="export-options">
+                        <label for="formatSelect">导出格式:</label>
+                        <select id="formatSelect" aria-label="选择导出格式">
+                            <option value="png">PNG (无损压缩，支持透明)</option>
+                            <option value="jpg">JPG (文件更小)</option>
+                        </select>
+                        <button id="exportBtn" disabled aria-label="导出图片">导出图片</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <div class="instructions">
-            <h3>Instructions:</h3>
+        <section class="instructions-section">
+            <h2>使用说明</h2>
             <ol>
-                <li>Enter your SVG code in the text area (must start with &lt;svg&gt; and end with &lt;/svg&gt;)</li>
-                <li>Click "Preview SVG" to see your SVG rendered</li>
-                <li>Click "Export as JPG" to download the image as a JPG file</li>
+                <li>在文本框中输入您的SVG代码（必须以 &lt;svg&gt; 开始，以 &lt;/svg&gt; 结束）</li>
+                <li>点击"预览SVG"按钮查看渲染效果</li>
+                <li>选择导出格式（PNG或JPG）</li>
+                <li>点击"导出图片"下载转换后的图片文件</li>
             </ol>
+        </section>
+
+        <section class="features-section">
+            <h2>功能特点</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>🚀 快速转换</h3>
+                    <p>无需上传文件，直接在浏览器中完成SVG到图片的转换</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🎨 高质量输出</h3>
+                    <p>支持高分辨率输出，保证图片质量清晰锐利</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔒 隐私安全</h3>
+                    <p>所有处理都在本地完成，不会上传您的SVG代码到服务器</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📱 跨平台支持</h3>
+                    <p>支持所有现代浏览器，在电脑、平板、手机上都能使用</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2>常见问题</h2>
+            <div class="faq-item">
+                <h3>什么是SVG格式？</h3>
+                <p>SVG（可缩放矢量图形）是一种基于XML的矢量图像格式，可以无损缩放到任意大小。</p>
+            </div>
+            <div class="faq-item">
+                <h3>PNG和JPG格式有什么区别？</h3>
+                <p>PNG支持透明背景，适合需要透明效果的图片；JPG文件更小，适合不需要透明背景的场景。</p>
+            </div>
+            <div class="faq-item">
+                <h3>转换后的图片质量如何？</h3>
+                <p>我们使用高质量的渲染算法，确保转换后的图片保持原有的清晰度和细节。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 SVG转图片工具. 免费在线使用，无需注册.</p>
         </div>
-    </div>
+    </footer>
     
     <script src="script.js"></script>
 </body>
