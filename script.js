@@ -133,8 +133,21 @@ document.addEventListener('DOMContentLoaded', function() {
         throw new Error('未找到有效的SVG元素');
       }
       
+      // 创建一个包装容器来保持预览区域的大小
       previewContainer.innerHTML = '';
-      previewContainer.appendChild(svgElement.cloneNode(true));
+      const wrapperDiv = document.createElement('div');
+      wrapperDiv.className = 'svg-wrapper';
+      wrapperDiv.style.width = '100%';
+      wrapperDiv.style.height = '100%';
+      wrapperDiv.style.display = 'flex';
+      wrapperDiv.style.alignItems = 'center';
+      wrapperDiv.style.justifyContent = 'center';
+      wrapperDiv.style.overflow = 'hidden';
+      wrapperDiv.style.backgroundColor = '#000000';
+      
+      // 添加SVG到包装容器
+      wrapperDiv.appendChild(svgElement.cloneNode(true));
+      previewContainer.appendChild(wrapperDiv);
       previewContainer.classList.add('has-content');
       if (exportBtn) exportBtn.disabled = false;
       
@@ -165,8 +178,21 @@ document.addEventListener('DOMContentLoaded', function() {
       mermaidPreviewContent.innerHTML = '';
       const uniqueId = 'mermaid-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
       
+      // 创建一个包装容器来保持预览区域的大小
+      const wrapperDiv = document.createElement('div');
+      wrapperDiv.className = 'mermaid-wrapper';
+      wrapperDiv.style.width = '100%';
+      wrapperDiv.style.height = '100%';
+      wrapperDiv.style.display = 'flex';
+      wrapperDiv.style.alignItems = 'center';
+      wrapperDiv.style.justifyContent = 'center';
+      wrapperDiv.style.overflow = 'hidden';
+      wrapperDiv.style.backgroundColor = '#000000';
+      
+      mermaidPreviewContent.appendChild(wrapperDiv);
+      
       mermaid.render(uniqueId, mermaidCode).then(({svg}) => {
-        mermaidPreviewContent.innerHTML = svg;
+        wrapperDiv.innerHTML = svg;
         if (mermaidPreviewContainer) mermaidPreviewContainer.classList.add('has-content');
         if (mermaidExportBtn) mermaidExportBtn.disabled = false;
         applyZoom();
@@ -198,13 +224,29 @@ document.addEventListener('DOMContentLoaded', function() {
   // 缩放函数
   function applySvgZoom() {
     if (previewContainer) {
-      previewContainer.style.transform = `scale(${svgCurrentZoom})`;
+      const svgElement = previewContainer.querySelector('svg');
+      if (svgElement) {
+        // 保持容器大小不变，只缩放内部SVG
+        svgElement.style.transform = `scale(${svgCurrentZoom})`;
+        svgElement.style.transformOrigin = 'center center';
+        // 确保SVG在容器内居中
+        svgElement.style.display = 'block';
+        svgElement.style.margin = '0 auto';
+      }
     }
   }
   
   function applyZoom() {
     if (mermaidPreviewContent) {
-      mermaidPreviewContent.style.transform = `scale(${currentZoom})`;
+      const svgElement = mermaidPreviewContent.querySelector('svg');
+      if (svgElement) {
+        // 保持容器大小不变，只缩放内部SVG
+        svgElement.style.transform = `scale(${currentZoom})`;
+        svgElement.style.transformOrigin = 'center center';
+        // 确保SVG在容器内居中
+        svgElement.style.display = 'block';
+        svgElement.style.margin = '0 auto';
+      }
     }
   }
   
@@ -265,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clonedContent.style.maxHeight = 'none';
     clonedContent.style.width = 'auto';
     clonedContent.style.height = 'auto';
+    clonedContent.style.backgroundColor = '#000000';
     
     contentContainer.appendChild(clonedContent);
     previewArea.appendChild(contentContainer);
