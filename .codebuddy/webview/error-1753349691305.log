@@ -1,0 +1,6 @@
+Webview errors at url: http://localhost:8080/
+error: 
+ [Window Error]: [javascript-error]: JavaScript Error: Uncaught SyntaxError: Unexpected token '<' | Url: http://localhost:8080/ | File: http://localhost:8080/:712:1
+Uncaught SyntaxError: Unexpected token '<'
+[Window Error]: [javascript-error]: JavaScript Error: Uncaught SyntaxError: Unexpected token '<' | Url: http://localhost:8080/ | File: http://localhost:8080/:1282:1
+Mermaid渲染错误: [object Object]

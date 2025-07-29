@@ -1,0 +1,4 @@
+Webview errors at url: http://localhost:8080/
+error: 
+ [Window Error]: [javascript-error]: JavaScript Error: Uncaught SyntaxError: Unexpected identifier 'SVGToJPGConverter' | Url: http://localhost:8080/script.js | File: http://localhost:8080/script.js:257:7
+Uncaught SyntaxError: Unexpected identifier 'SVGToJPGConverter'
