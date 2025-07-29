@@ -575,20 +575,82 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       
-      const svgRect = svgElement.getBoundingClientRect();
-      let svgWidth = svgElement.width?.baseVal?.value || svgRect.width || 300;
-      let svgHeight = svgElement.height?.baseVal?.value || svgRect.height || 300;
+      // 创建一个临时的克隆SVG用于计算尺寸
+      const tempSvg = svgElement.cloneNode(true);
+      document.body.appendChild(tempSvg);
+      tempSvg.style.position = 'absolute';
+      tempSvg.style.left = '-9999px';
+      tempSvg.style.visibility = 'hidden';
+      tempSvg.style.display = 'block';
+      tempSvg.style.width = 'auto';
+      tempSvg.style.height = 'auto';
       
+      // 确保SVG有正确的viewBox
+      if (!tempSvg.getAttribute('viewBox') && tempSvg.getAttribute('width') && tempSvg.getAttribute('height')) {
+        tempSvg.setAttribute('viewBox', `0 0 ${tempSvg.getAttribute('width')} ${tempSvg.getAttribute('height')}`);
+      }
+      
+      // 获取SVG的原始尺寸
+      let svgWidth, svgHeight;
+      
+      // 尝试从viewBox获取尺寸
+      const viewBox = tempSvg.getAttribute('viewBox');
+      if (viewBox) {
+        const viewBoxValues = viewBox.split(' ').map(Number);
+        if (viewBoxValues.length === 4) {
+          svgWidth = viewBoxValues[2];
+          svgHeight = viewBoxValues[3];
+        }
+      }
+      
+      // 如果viewBox没有提供有效尺寸，尝试其他方法
+      if (!svgWidth || !svgHeight) {
+        // 尝试从width/height属性获取
+        svgWidth = parseFloat(tempSvg.getAttribute('width')) || 0;
+        svgHeight = parseFloat(tempSvg.getAttribute('height')) || 0;
+        
+        // 如果属性没有提供尺寸，使用getBoundingClientRect
+        if (!svgWidth || !svgHeight) {
+          const bbox = tempSvg.getBBox ? tempSvg.getBBox() : { width: 0, height: 0 };
+          svgWidth = bbox.width || 300;
+          svgHeight = bbox.height || 300;
+          
+          // 最后尝试使用getBoundingClientRect
+          if (!svgWidth || !svgHeight) {
+            const rect = tempSvg.getBoundingClientRect();
+            svgWidth = rect.width || 300;
+            svgHeight = rect.height || 300;
+          }
+        }
+      }
+      
+      // 清理临时SVG
+      document.body.removeChild(tempSvg);
+      
+      // 确保尺寸有效
+      svgWidth = Math.max(svgWidth, 10);
+      svgHeight = Math.max(svgHeight, 10);
+      
+      // 保持原始宽高比
+      const aspectRatio = svgWidth / svgHeight;
+      
+      // 设置最小尺寸
       const minSize = 800;
       if (svgWidth < minSize || svgHeight < minSize) {
-        const ratio = Math.max(minSize / svgWidth, minSize / svgHeight);
-        svgWidth *= ratio;
-        svgHeight *= ratio;
+        if (svgWidth < svgHeight) {
+          svgWidth = minSize;
+          svgHeight = svgWidth / aspectRatio;
+        } else {
+          svgHeight = minSize;
+          svgWidth = svgHeight * aspectRatio;
+        }
       }
+      
+      console.log(`导出SVG尺寸: ${svgWidth}x${svgHeight}, 比例: ${aspectRatio}`);
       
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      const scale = 4;
+      const scale = 4; // 高分辨率
       canvas.width = svgWidth * scale;
       canvas.height = svgHeight * scale;
       
@@ -601,12 +663,14 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillRect(0, 0, svgWidth, svgHeight);
       }
       
+      // 准备SVG数据
       const svgData = new XMLSerializer().serializeToString(svgElement);
       const svgDataUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
       
       const img = new Image();
       img.onload = () => {
         try {
+          // 保持宽高比绘制
           ctx.drawImage(img, 0, 0, svgWidth, svgHeight);
           
           const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
@@ -652,20 +716,82 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       
-      const svgRect = svgElement.getBoundingClientRect();
-      let svgWidth = svgElement.width?.baseVal?.value || svgRect.width || 800;
-      let svgHeight = svgElement.height?.baseVal?.value || svgRect.height || 600;
+      // 创建一个临时的克隆SVG用于计算尺寸
+      const tempSvg = svgElement.cloneNode(true);
+      document.body.appendChild(tempSvg);
+      tempSvg.style.position = 'absolute';
+      tempSvg.style.left = '-9999px';
+      tempSvg.style.visibility = 'hidden';
+      tempSvg.style.display = 'block';
+      tempSvg.style.width = 'auto';
+      tempSvg.style.height = 'auto';
       
+      // 确保SVG有正确的viewBox
+      if (!tempSvg.getAttribute('viewBox') && tempSvg.getAttribute('width') && tempSvg.getAttribute('height')) {
+        tempSvg.setAttribute('viewBox', `0 0 ${tempSvg.getAttribute('width')} ${tempSvg.getAttribute('height')}`);
+      }
+      
+      // 获取SVG的原始尺寸
+      let svgWidth, svgHeight;
+      
+      // 尝试从viewBox获取尺寸
+      const viewBox = tempSvg.getAttribute('viewBox');
+      if (viewBox) {
+        const viewBoxValues = viewBox.split(' ').map(Number);
+        if (viewBoxValues.length === 4) {
+          svgWidth = viewBoxValues[2];
+          svgHeight = viewBoxValues[3];
+        }
+      }
+      
+      // 如果viewBox没有提供有效尺寸，尝试其他方法
+      if (!svgWidth || !svgHeight) {
+        // 尝试从width/height属性获取
+        svgWidth = parseFloat(tempSvg.getAttribute('width')) || 0;
+        svgHeight = parseFloat(tempSvg.getAttribute('height')) || 0;
+        
+        // 如果属性没有提供尺寸，使用getBBox
+        if (!svgWidth || !svgHeight) {
+          const bbox = tempSvg.getBBox ? tempSvg.getBBox() : { width: 0, height: 0 };
+          svgWidth = bbox.width || 800;
+          svgHeight = bbox.height || 600;
+          
+          // 最后尝试使用getBoundingClientRect
+          if (!svgWidth || !svgHeight) {
+            const rect = tempSvg.getBoundingClientRect();
+            svgWidth = rect.width || 800;
+            svgHeight = rect.height || 600;
+          }
+        }
+      }
+      
+      // 清理临时SVG
+      document.body.removeChild(tempSvg);
+      
+      // 确保尺寸有效
+      svgWidth = Math.max(svgWidth, 10);
+      svgHeight = Math.max(svgHeight, 10);
+      
+      // 保持原始宽高比
+      const aspectRatio = svgWidth / svgHeight;
+      
+      // 设置最小尺寸
       const minSize = 800;
       if (svgWidth < minSize || svgHeight < minSize) {
-        const ratio = Math.max(minSize / svgWidth, minSize / svgHeight);
-        svgWidth *= ratio;
-        svgHeight *= ratio;
+        if (svgWidth < svgHeight) {
+          svgWidth = minSize;
+          svgHeight = svgWidth / aspectRatio;
+        } else {
+          svgHeight = minSize;
+          svgWidth = svgHeight * aspectRatio;
+        }
       }
+      
+      console.log(`导出Mermaid图表尺寸: ${svgWidth}x${svgHeight}, 比例: ${aspectRatio}`);
       
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      const scale = 4;
+      const scale = 4; // 高分辨率
       canvas.width = svgWidth * scale;
       canvas.height = svgHeight * scale;
       
@@ -678,12 +804,14 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillRect(0, 0, svgWidth, svgHeight);
       }
       
+      // 准备SVG数据
       const svgData = new XMLSerializer().serializeToString(svgElement);
       const svgDataUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
       
       const img = new Image();
       img.onload = () => {
         try {
+          // 保持宽高比绘制
           ctx.drawImage(img, 0, 0, svgWidth, svgHeight);
           
           const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
