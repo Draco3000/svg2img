@@ -256,6 +256,67 @@
             border-radius: 8px;
         }
 
+        /* 主题样式 */
+        .theme-light {
+            background-color: #ffffff !important;
+        }
+
+        .theme-dark {
+            background-color: #000000 !important;
+        }
+
+        .svg-wrapper.theme-light,
+        .mermaid-wrapper.theme-light {
+            background-color: #ffffff !important;
+        }
+
+        .svg-wrapper.theme-dark,
+        .mermaid-wrapper.theme-dark {
+            background-color: #000000 !important;
+        }
+
+        /* 全屏模式主题样式 */
+        .fullscreen-overlay.theme-light {
+            background: #f8f9fa !important;
+        }
+
+        .fullscreen-overlay.theme-dark {
+            background: #1a1a1a !important;
+        }
+
+        .fullscreen-preview-area.theme-light {
+            background: #ffffff !important;
+        }
+
+        .fullscreen-preview-area.theme-dark {
+            background: #1a1a1a !important;
+        }
+
+        .fullscreen-content-container.theme-light svg {
+            background-color: #ffffff !important;
+        }
+
+        .fullscreen-content-container.theme-dark svg {
+            background-color: #000000 !important;
+        }
+
+        /* 全屏主题选择器样式 */
+        .fullscreen-theme-select {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .fullscreen-theme-select option {
+            background: #333;
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .tab-content.active {
                 grid-template-columns: 1fr;
@@ -299,6 +360,10 @@
                         <button id="svgResetZoomBtn" title="重置缩放">↻</button>
                         <button id="svgFullscreenBtn" title="全屏预览">⛶</button>
                     </div>
+                    <select id="svgThemeSelect">
+                        <option value="dark">Dark 背景</option>
+                        <option value="light">Light 背景</option>
+                    </select>
                     <select id="formatSelect">
                         <option value="png">PNG (无损, 支持透明)</option>
                         <option value="jpg">JPG (有损, 不支持透明)</option>
@@ -333,6 +398,10 @@
                         <button id="resetZoomBtn" title="重置缩放">↻</button>
                         <button id="fullscreenBtn" title="全屏预览">⛶</button>
                     </div>
+                    <select id="mermaidThemeSelect">
+                        <option value="dark">Dark 背景</option>
+                        <option value="light">Light 背景</option>
+                    </select>
                     <select id="mermaidFormatSelect">
                         <option value="png">PNG (无损, 支持透明)</option>
                         <option value="jpg">JPG (有损, 不支持透明)</option>

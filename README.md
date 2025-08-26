@@ -4,18 +4,33 @@ A web application that allows users to input SVG code, preview it, and export it
 
 ## Features
 
+- **Dual Mode Converter**: Support for both SVG code and Mermaid diagrams
 - **SVG Code Input**: Large textarea for entering SVG code
-- **Real-time Preview**: Automatic SVG rendering with live preview
+- **Mermaid Diagrams**: Support for flowcharts, sequence diagrams, and more
+- **Theme Selection**: Choose between Light and Dark background themes
+- **Real-time Preview**: Automatic rendering with live preview
+- **Zoom & Fullscreen**: Interactive zoom controls and fullscreen preview mode
 - **High-Quality Export**: Support for PNG (lossless) and JPG formats
 - **Smart Scaling**: Automatic upscaling for better image quality
 - **Responsive Design**: Works on desktop and mobile devices
 
 ## Usage
 
-1. Enter your SVG code in the textarea (must start with `<svg>` and end with `</svg>`)
-2. The preview will update automatically
-3. Select your preferred export format (PNG recommended for best quality)
-4. Click "Export Image" to download the converted image
+### SVG Conversion
+1. Switch to the "SVG转换" tab
+2. Enter your SVG code in the textarea (must start with `<svg>` and end with `</svg>`)
+3. Choose your preferred background theme (Light or Dark)
+4. The preview will update automatically with zoom and fullscreen controls
+5. Select your preferred export format (PNG recommended for best quality)
+6. Click "导出图片" to download the converted image
+
+### Mermaid Diagrams
+1. Switch to the "Mermaid图表" tab
+2. Enter your Mermaid diagram code (flowcharts, sequence diagrams, etc.)
+3. Choose your preferred background theme (Light or Dark)
+4. The preview will update automatically with zoom and fullscreen controls
+5. Select your preferred export format (PNG recommended for best quality)
+6. Click "导出图片" to download the converted image
 
 ## Technical Features
 

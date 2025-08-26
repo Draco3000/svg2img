@@ -32,12 +32,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const previewContainer = document.getElementById('previewContainer');
   const previewBtn = document.getElementById('previewBtn');
   const exportBtn = document.getElementById('exportBtn');
-  
+  const svgThemeSelect = document.getElementById('svgThemeSelect');
+
   const mermaidInput = document.getElementById('mermaidInput');
   const mermaidPreviewContainer = document.getElementById('mermaidPreviewContainer');
   const mermaidPreviewContent = document.getElementById('mermaidPreviewContent');
   const mermaidPreviewBtn = document.getElementById('mermaidPreviewBtn');
   const mermaidExportBtn = document.getElementById('mermaidExportBtn');
+  const mermaidThemeSelect = document.getElementById('mermaidThemeSelect');
   
   // SVG缩放控制按钮
   const svgZoomInBtn = document.getElementById('svgZoomInBtn');
@@ -89,6 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
   if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => { currentZoom = Math.max(currentZoom / 1.2, 0.2); applyZoom(); });
   if (resetZoomBtn) resetZoomBtn.addEventListener('click', () => { currentZoom = 1; applyZoom(); });
   if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+  // 主题切换事件监听器
+  if (svgThemeSelect) svgThemeSelect.addEventListener('change', applySvgTheme);
+  if (mermaidThemeSelect) mermaidThemeSelect.addEventListener('change', applyMermaidTheme);
   
   // 自动预览
   setTimeout(() => {
@@ -143,7 +149,10 @@ document.addEventListener('DOMContentLoaded', function() {
       wrapperDiv.style.alignItems = 'center';
       wrapperDiv.style.justifyContent = 'center';
       wrapperDiv.style.overflow = 'hidden';
-      wrapperDiv.style.backgroundColor = '#000000';
+
+      // 应用主题
+      const theme = svgThemeSelect ? svgThemeSelect.value : 'dark';
+      wrapperDiv.classList.add(`theme-${theme}`);
       
       // 添加SVG到包装容器
       wrapperDiv.appendChild(svgElement.cloneNode(true));
@@ -187,7 +196,10 @@ document.addEventListener('DOMContentLoaded', function() {
       wrapperDiv.style.alignItems = 'center';
       wrapperDiv.style.justifyContent = 'center';
       wrapperDiv.style.overflow = 'hidden';
-      wrapperDiv.style.backgroundColor = '#000000';
+
+      // 应用主题
+      const theme = mermaidThemeSelect ? mermaidThemeSelect.value : 'dark';
+      wrapperDiv.classList.add(`theme-${theme}`);
       
       mermaidPreviewContent.appendChild(wrapperDiv);
       
@@ -281,7 +293,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.createElement('div');
     overlay.className = 'fullscreen-overlay';
     overlay.id = 'fullscreenOverlay';
-    
+
+    // 获取当前主题
+    const currentTheme = type === 'SVG' ?
+      (svgThemeSelect ? svgThemeSelect.value : 'dark') :
+      (mermaidThemeSelect ? mermaidThemeSelect.value : 'dark');
+
     const controls = document.createElement('div');
     controls.className = 'fullscreen-controls';
     controls.innerHTML = `
@@ -290,6 +307,10 @@ document.addEventListener('DOMContentLoaded', function() {
         <button id="fullscreenZoomOut" title="缩小 (Ctrl/Cmd + -)">🔍-</button>
         <button id="fullscreenResetZoom" title="重置缩放 (Ctrl/Cmd + 0)">↻</button>
         <button id="fullscreenFit" title="适应屏幕 (F)">⛶</button>
+        <select id="fullscreenThemeSelect" class="fullscreen-theme-select" title="选择背景主题">
+          <option value="dark" ${currentTheme === 'dark' ? 'selected' : ''}>Dark 背景</option>
+          <option value="light" ${currentTheme === 'light' ? 'selected' : ''}>Light 背景</option>
+        </select>
       </div>
       <button id="exitFullscreen" class="exit-btn" title="退出全屏 (ESC)">✕</button>
     `;
@@ -307,8 +328,12 @@ document.addEventListener('DOMContentLoaded', function() {
     clonedContent.style.maxHeight = 'none';
     clonedContent.style.width = 'auto';
     clonedContent.style.height = 'auto';
-    clonedContent.style.backgroundColor = '#000000';
-    
+
+    // 应用主题
+    overlay.classList.add(`theme-${currentTheme}`);
+    previewArea.classList.add(`theme-${currentTheme}`);
+    contentContainer.classList.add(`theme-${currentTheme}`);
+
     contentContainer.appendChild(clonedContent);
     previewArea.appendChild(contentContainer);
     overlay.appendChild(controls);
@@ -320,6 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('fullscreenZoomOut').addEventListener('click', fullscreenZoomOut);
     document.getElementById('fullscreenResetZoom').addEventListener('click', fullscreenResetZoom);
     document.getElementById('fullscreenFit').addEventListener('click', fitToScreen);
+    document.getElementById('fullscreenThemeSelect').addEventListener('change', applyFullscreenTheme);
     document.getElementById('exitFullscreen').addEventListener('click', exitFullscreen);
     
     // 键盘快捷键支持
@@ -533,6 +559,50 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(() => {
         dragHandlers.applyTransform(0, 0, fullscreenZoom);
       }, 50);
+    }
+  }
+
+  // 主题切换函数
+  function applySvgTheme() {
+    const theme = svgThemeSelect ? svgThemeSelect.value : 'dark';
+    const wrapper = previewContainer?.querySelector('.svg-wrapper');
+    if (wrapper) {
+      wrapper.classList.remove('theme-light', 'theme-dark');
+      wrapper.classList.add(`theme-${theme}`);
+    }
+  }
+
+  function applyMermaidTheme() {
+    const theme = mermaidThemeSelect ? mermaidThemeSelect.value : 'dark';
+    const wrapper = mermaidPreviewContent?.querySelector('.mermaid-wrapper');
+    if (wrapper) {
+      wrapper.classList.remove('theme-light', 'theme-dark');
+      wrapper.classList.add(`theme-${theme}`);
+    }
+  }
+
+  // 全屏主题切换函数
+  function applyFullscreenTheme() {
+    const themeSelect = document.getElementById('fullscreenThemeSelect');
+    const theme = themeSelect ? themeSelect.value : 'dark';
+
+    const overlay = document.getElementById('fullscreenOverlay');
+    const previewArea = document.getElementById('fullscreenPreviewArea');
+    const contentContainer = document.getElementById('fullscreenContentContainer');
+
+    if (overlay) {
+      overlay.classList.remove('theme-light', 'theme-dark');
+      overlay.classList.add(`theme-${theme}`);
+    }
+
+    if (previewArea) {
+      previewArea.classList.remove('theme-light', 'theme-dark');
+      previewArea.classList.add(`theme-${theme}`);
+    }
+
+    if (contentContainer) {
+      contentContainer.classList.remove('theme-light', 'theme-dark');
+      contentContainer.classList.add(`theme-${theme}`);
     }
   }
   
