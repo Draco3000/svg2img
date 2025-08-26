@@ -727,11 +727,14 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.scale(scale, scale);
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
-      
-      if (format === 'jpg' || format === 'jpeg') {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, svgWidth, svgHeight);
-      }
+
+      // 根据主题设置背景色
+      const theme = svgThemeSelect ? svgThemeSelect.value : 'dark';
+      const backgroundColor = theme === 'light' ? '#ffffff' : '#000000';
+
+      // 根据主题设置背景色（PNG和JPG都使用主题背景）
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, svgWidth, svgHeight);
       
       // 准备SVG数据
       const svgData = new XMLSerializer().serializeToString(svgElement);
@@ -868,11 +871,14 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.scale(scale, scale);
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
-      
-      if (format === 'jpg' || format === 'jpeg') {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, svgWidth, svgHeight);
-      }
+
+      // 根据主题设置背景色
+      const theme = mermaidThemeSelect ? mermaidThemeSelect.value : 'dark';
+      const backgroundColor = theme === 'light' ? '#ffffff' : '#000000';
+
+      // 根据主题设置背景色（PNG和JPG都使用主题背景）
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, svgWidth, svgHeight);
       
       // 准备SVG数据
       const svgData = new XMLSerializer().serializeToString(svgElement);
